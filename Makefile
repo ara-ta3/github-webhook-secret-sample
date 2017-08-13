@@ -15,6 +15,9 @@ govendor:
 deploy/heroku:
 	git push heroku master
 
+open:
+	$(HEROKU) open --app $(heroku_app_name)
+
 deploy/heroku/env:
 	$(HEROKU) config:set --app $(heroku_app_name) SECRET_TOKEN=$(token)
 

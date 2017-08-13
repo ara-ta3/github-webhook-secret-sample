@@ -8,6 +8,10 @@ import (
 
 func main() {
 	token := os.Getenv("SECRET_TOKEN")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "80"
+	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		m := "ok"
 		b := r.Body
@@ -16,7 +20,7 @@ func main() {
 		}
 		fmt.Fprintf(w, m)
 	})
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 }
 
 func verifySignature(payload interface{}, token string) bool {
