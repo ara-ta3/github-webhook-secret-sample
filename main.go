@@ -19,15 +19,19 @@ func main() {
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		m := "ok"
+		s := http.StatusOK
 		b, e := ioutil.ReadAll(r.Body)
 		if e != nil {
+			s = http.StatusBadRequest
 			m = "ng"
 		} else {
-			s := r.Header.Get("X-Hub-Signature")
-			if !verifySignature(b, token, s) {
+			sig := r.Header.Get("X-Hub-Signature")
+			if !verifySignature(b, token, sig) {
+				s = http.StatusBadRequest
 				m = "ng"
 			}
 		}
+		w.WriteHeader(s)
 		fmt.Fprintf(w, m)
 	})
 	e := http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
