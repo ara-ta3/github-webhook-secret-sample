@@ -2,9 +2,12 @@ GOVENDOR=$(shell which govendor)
 HEROKU=$(shell which heroku)
 token=
 heroku_app_name=github-webhook-secret-sample
+port=8080
 
 run:
-	env SECRET_TOKEN=$(token) go run main.go
+	env SECRET_TOKEN=$(token) \
+		PORT=$(port) \
+		go run main.go
 
 install:
 	$(GOVENDOR) install 
